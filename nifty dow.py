@@ -1,2 +1,47 @@
-[25/09, 6:43 pm] Chaitali MK: SAME PROMPT FOR DOW JONES NASDAQ -AMERICAN EUROPEAN -CAC 40, FTSE , DAX ASIAN- NIKKEI, KOSPI, HANGSENG, SHANGHAI USD-INR VS NIFTY  ALSO CAN DO DOLLAR INDEX COMMODITY-GOLD AND SILVER CRUDE OIL ALL GRAPHS VS NIFTY 50 WHAT IS DOLLAR INDEX-5 MAJOR CURRENCY INDEX IF DOLLAR INDEX INCREASES DOLLAR USD GOES DOWN WHAT CAN BE DONE TO IMPROVISE WITH ALL GRAPHS DO SAME 2020 BEFORE AFTER CORELATION ACCENTURE CORRELATION WITH ALL OTHER MAJOR COMPANYSS
-[25/09, 6:50 pm] Chaitali MK: I WANT TO FETCH DOW JONES, NASDAQ, NIFTY 50 GRAPH DATA FROM YFINANCE AND I WANT TO CREATE 3 DIFFERENT LINE CHARTS 1 BELOW OTHER FETCH THE DATA FROM Y FINANCE AND THE DURATION IS JAN 2021 TO TILL DATE GIVE ME PYTHON CODE
+!pip install yfinance --quiet
+
+import yfinance as yf
+import pandas as pd
+import matplotlib.pyplot as plt
+plt.style.use("seaborn-v0_8")
+start = "2021-01-01"
+end = None   # Current date
+
+tickers = { 
+    "Dow Jones": "^DJI",
+    "NASDAQ": "^IXIC",
+    "NIFTY 50": "^NSEI"
+}
+
+# Fetching data
+data = {name: yf.download(ticker, start=start, end=end) for name, ticker in tickers.items()}
+
+# Display first rows of each
+for name in data:
+    print(f"\n--- {name} Data ---\n")
+    display(data[name].head())
+plt.figure(figsize=(12,14))
+
+# Dow Jones
+plt.subplot(3,1,1)
+plt.plot(data["Dow Jones"]["Close"], label="Dow Jones", linewidth=2)
+plt.title("Dow Jones Index (2021 - Present)")
+plt.ylabel("Price")
+plt.legend()
+
+# NASDAQ
+plt.subplot(3,1,2)
+plt.plot(data["NASDAQ"]["Close"], color="orange", label="NASDAQ", linewidth=2)
+plt.title("NASDAQ Index (2021 - Present)")
+plt.ylabel("Price")
+plt.legend()
+
+# NIFTY 50
+plt.subplot(3,1,3)
+plt.plot(data["NIFTY 50"]["Close"], color="green", label="NIFTY 50", linewidth=2)
+plt.title("NIFTY 50 Index (2021 - Present)")
+plt.ylabel("Price")
+plt.legend()
+
+plt.tight_layout()
+plt.show()
